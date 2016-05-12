@@ -1,0 +1,9 @@
+<h1>Todo List</h1>
+
+<table style="width:100%">
+{% for todo in todo_list %}
+  <tr>
+    <td>{{ todo.task_name }}</td>
+	<td>{{ todo.task_text }}</td>
+  </tr>
+{% endfor %}
