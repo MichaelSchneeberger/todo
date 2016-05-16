@@ -21,10 +21,11 @@ def addtodo(request):
 
             def convert_input_to_date(date_input):
                 format_list = ['%Y%m%d', '%Y%m%d %H%M']
+                current_tz = timezone.get_current_timezone()
                 date_object = None
                 for format in format_list:
                     try:
-                        date_object = timezone.localize(datetime.strptime(date_input, format))
+                        date_object = current_tz.localize(datetime.strptime(date_input, format))
                         break
                     except:
                         pass
