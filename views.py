@@ -7,13 +7,19 @@ from datetime import datetime
 from .models import HaveToTask
 from .forms import HaveToForm
 
+def alltodo(request):
+    todo_list = HaveToTask.objects.filter(done_date__isnull=True)
+    context = {'todo_list': todo_list}
+    return render(request, 'todo/alltodo.html', context)
+
 def overview(request):
     todo_list = HaveToTask.objects.filter( \
-		Q(start_date__lte = timezone.now()) | \
-                Q(start_date__isnull = True))
+        Q(start_date__lte=timezone.now()) | \
+        Q(start_date__isnull=True), \
+        Q(done_date__isnull=True))
     context = {'todo_list': todo_list}
-    return render(request, 'todo/overview.html', context)
-		
+    return render(request, 'todo/alltodo.html', context)
+
 def addtodo(request):
     if request.method == 'POST':
         form = HaveToForm(request.POST)

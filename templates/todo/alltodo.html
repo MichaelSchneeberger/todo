@@ -1,0 +1,13 @@
+<h1>Todo List</h1>
+
+<table style="width:100%">
+{% for todo in todo_list %}
+  <tr>
+      <td>{{ todo.task_name }}</td>
+      <td>{{ todo.task_text }}</td>
+      <td>{{ todo.start_date }}</td>
+      <td>{{ todo.soft_due_date }}</td>
+      <td>{{ todo.hard_due_date }}</td>
+      <td>{{ todo.done_date }}</td>
+  </tr>
+{% endfor %}
