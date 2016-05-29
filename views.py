@@ -13,12 +13,16 @@ def alltodo(request):
     return render(request, 'todo/alltodo.html', context)
 
 def overview(request):
-    todo_list = HaveToTask.objects.filter( \
-        Q(start_date__lte=timezone.now()) | \
-        Q(start_date__isnull=True), \
-        Q(done_date__isnull=True))
-    context = {'todo_list': todo_list}
-    return render(request, 'todo/alltodo.html', context)
+    open_todo_list = HaveToTask.objects.filter(done_date__isnull=True)
+    soft_todo_list = open_todo_list.filter( \
+        Q(start_date__lte=timezone.now()) | Q(start_date__isnull=True), \
+    )
+    hard_todo_list = open_todo_list.filter( \
+        soft_due_date__lte=timezone.now(), hard_due_date__isnull=False
+    )
+    context = {'soft_todo_list': soft_todo_list,
+               'hard_todo_list': hard_todo_list}
+    return render(request, 'todo/overview.html', context)
 
 def addtodo(request):
     if request.method == 'POST':
