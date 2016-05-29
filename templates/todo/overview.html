@@ -1,20 +1,52 @@
 <h1>Todo List</h1>
 
 <table style="width:100%">
-    {% if not hard_todo_list %}
-    {% for todo in soft_todo_list %}
+    <col>
+    <col>
+    <col width="300px">
+    <col width="300px">
+    <col width="50px">
     <tr>
-        <td>{{ todo.task_name }}</td>
-        <td>{{ todo.task_text }}</td>
-        <td>{{ todo.soft_due_date }}</td>
+        <th align="left">Name</th>
+        <th align="left">Description</th>
+        <th align="left">Due Date</th>
+        <th align="left">Prospone</th>
+        <th align="left">Done</th>
     </tr>
-    {% endfor %}
+    {% if not hard_todo_list %}
+    <tr>
+        <td>{{ soft_todo.task_name }}</td>
+        <td>{{ soft_todo.task_text }}</td>
+        <td>{{ soft_todo.soft_due_date }}</td>
+        <td>
+            <form action="{% url 'todo:prostpone_date' %}" method="post">
+                {% csrf_token %}
+                <input type="text" size="10" name="prospone_date">
+                <input type="hidden" name="todo_id" value="{{ soft_todo.pk }}">
+                <input type="submit" value="prospone" />
+            </form>
+        </td>
+        <td>
+            <form action="{% url 'todo:set_todo_as_done' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="todo_id" value="{{ soft_todo.pk }}">
+                <input type="submit" value="done" />
+            </form>
+        </td>
+    </tr>
     {% else %}
     {% for todo in hard_todo_list %}
     <tr>
-        <td>{{ todo.task_name }}</td>
+        <td><font color="red">{{ todo.task_name }}</font></td>
         <td>{{ todo.task_text }}</td>
         <td>{{ todo.hard_due_date }}</td>
+        <td>
+            <form action="{% url 'todo:set_todo_as_done' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="todo_id" value="{{ todo.pk }}">
+                <input type="submit" value="done" />
+            </form>
+        </td>
     </tr>
     {% endfor %}
     {% endif %}
